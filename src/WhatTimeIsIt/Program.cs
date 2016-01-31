@@ -2,11 +2,16 @@
 
 namespace WhatTimeIsIt
 {
-    static class Program
+    public static class Program
     {
         static void Main()
         {
-            Console.WriteLine($"{DateTime.Now:D}");
+            Console.WriteLine(GetDateTimeString(DateTime.Now));
+        }
+
+        public static string GetDateTimeString(DateTime dateTime)
+        {
+            return $"{dateTime:D}";
         }
     }
 }

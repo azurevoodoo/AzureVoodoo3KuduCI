@@ -1,3 +1,5 @@
+#tool "xunit.runner.console"
+
 ///////////////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 ///////////////////////////////////////////////////////////////////////////////
@@ -19,13 +21,13 @@ var solutionPaths = solutions.Select(solution => solution.GetDirectory());
 Setup(() =>
 {
     // Executed BEFORE the first task.
-    Information("Running tasks...");
+    Information("{0:yyyy-MM-dd HH:mm:ss} Running tasks...", DateTime.UtcNow);
 });
 
 Teardown(() =>
 {
     // Executed AFTER the last task.
-    Information("Finished running tasks.");
+    Information("{0:yyyy-MM-dd HH:mm:ss} Finished running tasks.", DateTime.UtcNow);
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -71,13 +73,21 @@ Task("Build")
     }
 });
 
+Task("Run-Unit-Tests")
+    .IsDependentOn("Build")
+    .Does(() =>
+{
+    XUnit2("./src/**/bin/" + configuration + "/*.Tests.dll", new XUnit2Settings {
+        NoAppDomain = true
+        });
+});
+
 ///////////////////////////////////////////////////////////////////////////////
 // TARGETS
 ///////////////////////////////////////////////////////////////////////////////
 
 Task("Default")
-    .IsDependentOn("Build");
-
+    .IsDependentOn("Run-Unit-Tests");
 
 ///////////////////////////////////////////////////////////////////////////////
 // EXECUTION
