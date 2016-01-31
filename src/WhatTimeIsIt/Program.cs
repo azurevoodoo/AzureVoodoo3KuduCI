@@ -1,4 +1,5 @@
 ﻿using System;
+using static System.FormattableString;
 
 namespace WhatTimeIsIt
 {
@@ -11,7 +12,7 @@ namespace WhatTimeIsIt
 
         public static string GetDateTimeString(DateTime dateTime)
         {
-            return $"{dateTime:D}";
+            return Invariant($"{dateTime:F}");
         }
     }
 }
